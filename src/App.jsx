@@ -389,7 +389,7 @@ export default function App() {
 
           {/* Card 2 */}
           <div className="p-6 rounded-2xl bg-[#0A0E17] border border-[#1E293B] space-y-2 hover:border-[#8B7CFF]/40 transition-all">
-            <span className="text-3xl font-bold font-mono text-white block">5+</span>
+            <span className="text-3xl font-bold font-mono text-white block">3+</span>
             <div>
               <h4 className="text-xs font-semibold text-white">Core Projects</h4>
               <p className="text-[11px] text-[#64748B] mt-0.5">Production & Hackathon</p>
