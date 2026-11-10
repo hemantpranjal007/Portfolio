@@ -87,43 +87,12 @@ export default function App() {
       ],
       demoUrl: null
     },
-    {
-      id: "resume-analyzer",
-      title: "AI-Powered Resume Analyzer",
-      category: "Full-Stack",
-      badge: "INNOVISTA 2.0",
-      shortDesc: "Automated candidate ranking and ATS analysis interface for recruiters.",
-      overview: "A recruiter-centric analytical platform designed to streamline high-volume talent screening, candidate matching, and ATS evaluation with instant visual scoring.",
-      role: "Lead Interface & Frontend Developer",
-      tech: ["JavaScript", "HTML5", "CSS3", "ATS Scoring Logic", "Document Analysis"],
-      contributions: [
-        "Engineered multi-resume upload workflow with dynamic parsing interfaces.",
-        "Built applicant scorecard and automated role-based competency extraction dashboard.",
-        "Showcased at INNOVISTA 2.0 Interdisciplinary Project Work Expo at Sir MVIT."
-      ],
-      demoUrl: "https://coffee-helen-75.tiiny.site"
-    },
-    {
-      id: "expense-tracker",
-      title: "Personal Expense Tracker",
-      category: "Full-Stack",
-      badge: "Production Utility",
-      shortDesc: "Lightweight personal finance management dashboard with real-time analytics & CSV export.",
-      overview: "A focused finance utility built to help individuals monitor income, track category-wise expenses, and visualize saving habits with zero friction.",
-      role: "Frontend Engineer",
-      tech: ["JavaScript", "HTML5", "CSS3", "Chart.js", "Local Storage"],
-      contributions: [
-        "Engineered budget calculations, balance updates, and transaction filtering.",
-        "Integrated dynamic Chart.js visualizations for expense categorization.",
-        "Implemented CSV report generation and responsive UI layout."
-      ],
-      demoUrl: "https://orange-dulcinea-37.tiiny.site"
-    }
   ];
 
   const filteredProjects = activeTab === 'All' 
     ? projects 
     : projects.filter(p => p.category === activeTab);
+  const projectCategories = ['All', ...new Set(projects.map(project => project.category))];
 
   const skillsData = [
     {
@@ -503,7 +472,7 @@ export default function App() {
 
             {/* Filter Tabs */}
             <div className="inline-flex p-1 rounded-xl bg-[#0A0E17] border border-[#1E293B] text-xs">
-              {['All', 'AI & ML', 'Full-Stack', 'Analytics'].map((tab) => (
+              {projectCategories.map((tab) => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
@@ -521,10 +490,16 @@ export default function App() {
 
           {/* Project Grid */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            {filteredProjects.map((project) => (
+            {filteredProjects.map((project, index) => (
               <div 
                 key={project.id}
-                className="group rounded-2xl bg-[#0A0E17] border border-[#1E293B] hover:border-[#8B7CFF]/50 transition-all flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl hover:shadow-[#8B7CFF]/5"
+                className={`group rounded-2xl bg-[#0A0E17] border border-[#1E293B] hover:border-[#8B7CFF]/50 transition-all flex flex-col justify-between overflow-hidden shadow-sm hover:shadow-xl hover:shadow-[#8B7CFF]/5 ${
+                  filteredProjects.length > 1 &&
+                  filteredProjects.length % 2 === 1 &&
+                  index === filteredProjects.length - 1
+                    ? 'md:col-span-2'
+                    : ''
+                }`}
               >
                 <div className="p-6 space-y-4">
                   <div className="flex items-center justify-between text-xs">
