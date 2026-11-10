@@ -210,13 +210,15 @@ export default function App() {
 
           {/* Action Buttons */}
           <div className="flex items-center gap-3">
-            <button 
-              onClick={() => setIsResumeOpen(true)}
+            <a
+              href="/Hemant%20Resume.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               className="flex items-center gap-2 px-4 py-2 rounded-lg bg-[#0F1626] border border-[#1E293B] text-xs font-semibold text-white hover:border-[#8B7CFF]/50 transition-all"
             >
               <FileText className="w-3.5 h-3.5 text-[#8B7CFF]" />
               <span>Resume</span>
-            </button>
+            </a>
             <a 
               href="#contact"
               className="px-4 py-2 rounded-lg bg-[#8B7CFF] text-[#080B11] text-xs font-bold hover:bg-[#9B8EFF] transition-all shadow-md shadow-[#8B7CFF]/15"
