@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { 
   FileText, 
   ChevronRight, 
-  CheckCircle2, 
   Send, 
   X,
   ExternalLink,
@@ -20,20 +19,48 @@ export default function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isResumeOpen, setIsResumeOpen] = useState(false);
   const [formSent, setFormSent] = useState(false);
+  const [isSending, setIsSending] = useState(false);
+  const [formError, setFormError] = useState('');
   const [formData, setFormData] = useState({ name: '', email: '', message: '' });
 
   const email = "hemantpranjaldev@gmail.com";
   const linkedinUrl = "https://www.linkedin.com/in/hemantpranjal/";
   const githubUrl = "https://github.com/hemantpranjal007";
 
-  const handleFormSubmit = (e) => {
+  const handleFormSubmit = async (e) => {
     e.preventDefault();
-    if (!formData.name || !formData.email) return;
-    setFormSent(true);
-    setTimeout(() => {
-      setFormSent(false);
+    if (isSending) return;
+    setFormSent(false);
+    setFormError('');
+    setIsSending(true);
+
+    try {
+      const response = await fetch('https://api.web3forms.com/submit', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          Accept: 'application/json',
+        },
+        body: JSON.stringify({
+          access_key: 'cebe0ebb-ff7c-451e-be24-5a2ba457751b',
+          name: formData.name,
+          email: formData.email,
+          message: formData.message,
+        }),
+      });
+
+      if (response.status !== 200) {
+        throw new Error(`Web3Forms returned status ${response.status}`);
+      }
+
       setFormData({ name: '', email: '', message: '' });
-    }, 4000);
+      setFormSent(true);
+    } catch (error) {
+      console.error('Failed to send contact form:', error);
+      setFormError('Unable to send your message. Please try again.');
+    } finally {
+      setIsSending(false);
+    }
   };
 
   const projects = [
@@ -702,13 +729,12 @@ export default function App() {
 
                 <button 
                   type="submit"
-                  disabled={formSent}
+                  disabled={isSending}
                   className="w-full py-2.5 rounded-lg bg-[#8B7CFF] text-[#080B11] text-xs font-bold hover:bg-[#9B8EFF] transition-all flex items-center justify-center gap-2"
                 >
-                  {formSent ? (
+                  {isSending ? (
                     <>
-                      <CheckCircle2 className="w-4 h-4 text-[#080B11]" />
-                      <span>Message Dispatched Successfully</span>
+                      <span>Sending...</span>
                     </>
                   ) : (
                     <>
@@ -717,6 +743,16 @@ export default function App() {
                     </>
                   )}
                 </button>
+                {formSent && (
+                  <p role="status" className="text-sm text-green-400">
+                    Message sent successfully! I'll get back to you soon.
+                  </p>
+                )}
+                {formError && (
+                  <p role="alert" className="text-sm text-red-400">
+                    {formError}
+                  </p>
+                )}
               </form>
             </div>
           </div>
